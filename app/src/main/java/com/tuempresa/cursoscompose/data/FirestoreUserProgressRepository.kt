@@ -32,16 +32,8 @@ class FirestoreUserProgressRepository(
             return
         }
 
-        auth.signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Anonymous sign-in success, uid=${auth.currentUser?.uid}")
-                    onComplete(true, null)
-                } else {
-                    Log.e(TAG, "Anonymous sign-in FAILED", task.exception)
-                    onComplete(false, task.exception as? Exception)
-                }
-            }
+        // No intentamos sign-in anónimo: la app requiere autenticación explícita (FB/GitHub).
+        onComplete(false, IllegalStateException("User not authenticated - anonymous auth disabled"))
     }
 
     override fun getCoursesStream(): Flow<List<Course>> = callbackFlow {
@@ -58,13 +50,11 @@ class FirestoreUserProgressRepository(
                             val id = doc.id
                             val title = doc.getString("title") ?: return@mapNotNull null
                             val author = doc.getString("author") ?: "Desconocido"
-                            val imageUrl = doc.getString("imageUrl")
                             val progressPercent = doc.getLong("progressPercent")?.toInt() ?: 0
                             Course(
                                 id = id,
                                 title = title,
                                 author = author,
-                                imageUrl = imageUrl,
                                 progressPercent = progressPercent
                             )
                         } catch (e: Exception) {
@@ -91,20 +81,15 @@ class FirestoreUserProgressRepository(
     override suspend fun getCourseById(id: String): Course? {
         val uid = auth.currentUser?.uid
         if (uid == null) {
-            try {
-                auth.signInAnonymously().await()
-            } catch (e: Exception) {
-                throw IllegalStateException("Auth required to read course", e)
-            }
+            throw IllegalStateException("Auth required to read course: user not authenticated")
         }
 
         val doc = coursesCollection.document(id).get().await()
         return if (doc.exists()) {
             val title = doc.getString("title") ?: return null
             val author = doc.getString("author") ?: "Desconocido"
-            val imageUrl = doc.getString("imageUrl")
             val progressPercent = doc.getLong("progressPercent")?.toInt() ?: 0
-            Course(id = doc.id, title = title, author = author, imageUrl = imageUrl, progressPercent = progressPercent)
+            Course(id = doc.id, title = title, author = author, progressPercent = progressPercent)
         } else null
     }
 
@@ -183,7 +168,6 @@ class FirestoreUserProgressRepository(
         val data = mapOf(
             "title" to course.title,
             "author" to course.author,
-            "imageUrl" to course.imageUrl,
             "progressPercent" to course.progressPercent
         )
         docRef.set(data).await()

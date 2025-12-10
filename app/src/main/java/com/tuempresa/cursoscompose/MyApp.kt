@@ -1,60 +1,30 @@
 package com.tuempresa.cursoscompose
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.tuempresa.cursoscompose.navigation.AppNavHost
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.auth.ktx.auth
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tuempresa.cursoscompose.data.LocalCoursesRepository
+import com.tuempresa.cursoscompose.di.ViewModelFactory
+import com.tuempresa.cursoscompose.ui.screens.MainScreen
+import com.tuempresa.cursoscompose.ui.theme.CursosComposeTheme
 import com.tuempresa.cursoscompose.viewmodel.CoursesViewModel
 
 @Composable
 fun MyApp() {
-    // Tema base (puedes usar tu Theme si existe)
-    MaterialTheme {
+    // Configuración del ViewModel con el repositorio local
+    val repository = remember { LocalCoursesRepository() }
+    val factory = remember { ViewModelFactory(repository) }
+    val vm: CoursesViewModel = viewModel(factory = factory)
+
+    // Aplicar el tema personalizado de la aplicación
+    CursosComposeTheme {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-            // Header debug: muestra UID y un botón para forzar recarga
-            val auth = Firebase.auth
-            val uid = auth.currentUser?.uid
-
-            // Small layout: header + navhost
-            Column(modifier = Modifier.fillMaxSize()) {
-                DebugHeader(uid = uid)
-                // Contenedor principal
-                Box(modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()) {
-
-                    // NavHost principal (tu navegación existente)
-                    AppNavHost(start = "catalog")
-                }
-            }
+            // La pantalla principal ahora contiene la barra de navegación
+            MainScreen(vm = vm)
         }
     }
-}
-
-@Composable
-private fun DebugHeader(uid: String?) {
-    val vm: CoursesViewModel = viewModel()
-    val courses by vm.courses.collectAsState()
-    TopAppBar(
-        title = {
-            Column {
-                Text("CursosCompose - Debug")
-                Text("UID: ${uid ?: "no-auth"}", style = MaterialTheme.typography.caption)
-            }
-        },
-        actions = {
-            // Muestra conteo de cursos en el AppBar para diagnóstico rápido
-            Box(modifier = Modifier.padding(end = 12.dp), contentAlignment = Alignment.Center) {
-                Text("${courses.size} cursos", style = MaterialTheme.typography.body2)
-            }
-        }
-    )
 }

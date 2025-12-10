@@ -31,7 +31,6 @@ class SimpleUserCoursesRepository(
                         id = d.id,
                         title = d.getString("title") ?: "",
                         author = d.getString("author") ?: "",
-                        imageUrl = d.getString("imageUrl"),
                         progressPercent = d.getLong("progressPercent")?.toInt() ?: 0
                     )
                 }

@@ -2,16 +2,19 @@ package com.tuempresa.cursoscompose.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Paleta viva y contrastada
+val Primary = Color(0xFF7C4DFF) // morado vivo
+val PrimaryVariant = Color(0xFF5E2AD6)
+val Secondary = Color(0xFFFFC107) // ámbar para destaque
+val SecondaryVariant = Color(0xFFFFA000)
+val Accent = Color(0xFF00BFA5) // verde/teal vivo
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val BackgroundLight = Color(0xFFFFFFFF)
+val BackgroundDark = Color(0xFF0F1720)
 
+// Colores usados en el tema para compatibilidad con archivos previos
 val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF7C4DFF) // morado principal
-val Purple700 = Color(0xFF5E2AD6)
-val Teal200 = Color(0xFF03DAC5)
-val Background = Color(0xFF121212) // fondo oscuro opcional
+val Purple500 = Primary
+val Purple700 = PrimaryVariant
+val Teal200 = Accent
+val Background = BackgroundDark

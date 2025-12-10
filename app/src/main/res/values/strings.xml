@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AppCursos</string>
+    <!-- Facebook configuration placeholders: replace with real values -->
+    <string name="facebook_app_id">1335670974997960</string>
+    <string name="facebook_client_token">eb884b0bb26fdd4de70109a631617b1d</string>
+    <string name="fb_login_protocol_scheme">fb1335670974997960</string>
 </resources>

@@ -15,12 +15,12 @@ plugins {
 
 android {
     namespace = "com.tuempresa.cursoscompose" // <-- REEMPLAZA por tu paquete
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.tuempresa.cursoscompose" // <-- REEMPLAZA por tu paquete
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -62,28 +62,41 @@ android {
     }
 }
 
+
 dependencies {
-    // BOM de Compose (opcional si manejas con version catalog)
-    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    // BOM de Compose (Bill of Materials) - gestiona las versiones de las librerías de Compose
+    implementation(platform("androidx.compose:compose-bom:2025.12.00"))
 
     // Core Compose
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material:material")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation("androidx.compose.material:material-icons-extended")
 
-    // Navigation Compose
-    implementation("androidx.navigation:navigation-compose:2.7.0")
+    // Activity y Navigation para Compose
+    implementation("androidx.activity:activity-compose:1.12.1")
+    implementation("androidx.navigation:navigation-compose:2.9.6")
 
-    // Coil para cargar imágenes en Compose (opcional)
+    // ViewModel para Compose y Lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+
+    // Firebase
+    implementation("com.google.firebase:firebase-analytics-ktx:22.5.0")
+    implementation("com.google.firebase:firebase-auth-ktx:23.2.1")
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.4")
+
+    // Facebook Login
+    implementation("com.facebook.android:facebook-login:16.2.0")
+
+    // Image loading (Coil) para cargar avatares
     implementation("io.coil-kt:coil-compose:2.4.0")
-
-    // Firebase Analytics (KTX)
-    implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
-
-    // (Opcional) Firebase Auth / Firestore si quieres integrar después
-    // implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
-    // implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
+    implementation(libs.androidx.ui)
 
     // Debugging / herramientas
     debugImplementation("androidx.compose.ui:ui-tooling")
@@ -91,37 +104,8 @@ dependencies {
 
     // Tests (opcional)
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2025.12.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-
-    // Coroutine + lifecycle + ViewModel Compose
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-
-// Optional: Firestore (solo si luego la activas)
-    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
-
-    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
-    implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-// Firestore
-    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
-
-// Firebase Auth (para signInAnonymously en pruebas)
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
-
-// Analytics (si aún no está)
-    implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
-
-// Coroutines (si no están)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
-
 }
